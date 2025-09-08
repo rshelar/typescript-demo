@@ -1,0 +1,45 @@
+### IntelliJ IDEA ###
+# .gitignore
+
+# Node dependencies
+node_modules/
+
+# Playwright test artifacts
+test-results/
+playwright-report/
+*.zip
+*.log
+
+# Environment config
+.env
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# IDE settings (optional)
+.idea/
+.vscode/
+
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
