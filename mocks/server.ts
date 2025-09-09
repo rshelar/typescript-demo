@@ -57,6 +57,7 @@ app.post('/api/transactions', (req, res) => {
         const txn = transactionService.createTransaction(req.body);
         res.status(200).json(txn);
     } catch (err: any) {
+        console.error('!!! Error in createTransaction:', err.message);
         res.status(400).json({ error: err.message });
     }
 });

@@ -1,14 +1,22 @@
 import { User, Transaction } from './types';
 
+function generateRandomString(length: number): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * chars.length);
+    result += chars[randomIndex];
+  }
+  return result;
+}
+
 export function generateUser(): Omit<User, 'userId'> {
-    const names = ['John', 'William', 'Mary', 'Jennifer', 'Bob', 'Henry'];
-    const user_index = Math.floor(Math.random() * names.length);
-    const name = names[user_index]
     // Return request payload for creating a new user.
+    const name = generateRandomString(10)
     return {
         name: `${name}${Math.floor(Math.random() * 1000)}`,
         email: `${name}@gmail.com`,
-        accountType: (user_index % 2 == 0) ? 'basic' : 'premium',
+        accountType: Math.random() < 0.5 ? 'basic' : 'premium',
     };
 }
 
@@ -20,8 +28,8 @@ export function buildTransaction(
 ): Omit<Transaction, 'transactionId'> {
     return {
         userId,
-        recipientId,
         amount,
         type,
+        recipientId,
     };
 }

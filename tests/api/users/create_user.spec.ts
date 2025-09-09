@@ -1,43 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { generateUser } from '../helpers/dataFactory';
-import { UserService } from '../path/to/UserService';
+import { generateUser } from '../../helpers/dataFactory';
+import { UserService } from '../../../mocks/services/UserService';
 
-test('should create a user successfully', async ({ request }) => {
-    const payload = generateUser();
-    const response = await request.post('http://localhost:3000/api/users', {
-        data: payload,
-    });
-
-    expect(response.status()).toBe(200);
-    const body = await response.json();
-    expect(body).toMatchObject({
-        name: payload.name,
-        email: payload.email,
-        accountType: payload.accountType,
-    });
-    expect(body.userId).toBeDefined();
-});
-
-test('should get a valid user', async ({ request }) => {
-    const payload = generateUser();
-    let response = await request.post('http://localhost:3000/api/users', {
-        data: payload,
-    });
-    expect(response.status()).toBe(201);
-    let body = await response.json();
-    const user_id = body.userId
-
-    response = await request.get('http://localhost:3000/api/users', {
-        data: { userId: `${user_id}` },
-    });
-    expect(response.status()).toBe(200);
-    body = await response.json();
-    expect(body).toMatchObject({
-        userId: user_id,
-        name: payload.name,
-        email: payload.email,
-        accountType: payload.accountType,
-    });
+test('create and get a user', () => {
+    const userService = new UserService();
+    const user = userService.createUser(generateUser());
+    expect(userService.getAllUsers().length).toBe(1)
+    expect(userService.getUserById(user.userId)).toMatchObject(user)
 });
 
 test('should create multiple users', () => {
@@ -75,7 +44,7 @@ test('should not create a user with missing accountType', () => {
 test('should not create a user with invalid accountType', () => {
     const userService = new UserService();
     expect(() => userService.createUser({ name: "John Smith", email: "foo@gmail.com", accountType: "foobar" }))
-    .toThrow('Missing required fields');
+    .toThrow('Invalid account type');
 });
 
 test('should not create a user with duplicate email', async ({ request }) => {

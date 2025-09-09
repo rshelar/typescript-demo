@@ -12,6 +12,7 @@ export class TransactionService {
     }
 
     createTransaction(txn: Omit<Transaction, 'transactionId'>): Transaction {
+        console.log('TransactionService.createTransaction called with', txn)
         const { userId, amount, type, recipientId } = txn;
         if (!userId || !amount || !type || !recipientId) {
             throw new Error('Missing required fields');
