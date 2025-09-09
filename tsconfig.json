@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "types": ["node", "playwright"],
+    "outDir": "dist"
+  },
+  "include": ["tests", "mocks", "playwright.config.ts"]
+}
