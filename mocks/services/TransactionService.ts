@@ -20,7 +20,7 @@ export class TransactionService {
         this.userService.getUserById(userId);      // will throw if not found
         this.userService.getUserById(recipientId); // will throw if not found
         const transaction: Transaction = { transactionId: uuidv4(), userId, amount, type, recipientId };
-        this.transactions.set(transaction.transactionId, transaction);
+        this.transactions.set(transaction.transactionId!, transaction);
         if (!this.userTransactions.has(userId)) {
             this.userTransactions.set(userId, []);
         }

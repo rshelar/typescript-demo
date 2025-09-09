@@ -64,7 +64,7 @@ app.post('/api/transactions', (req, res) => {
 
 app.get('/api/users/:userId/transactions', (req, res) => {
     try {
-        const txns = transactionService.getTransactionsForUser(req.params.userId);
+        const txns = transactionService.getTransactionsByUserId(req.params.userId);
         res.status(200).json(txns);
     } catch (err: any) {
         res.status(404).json({ error: err.message });

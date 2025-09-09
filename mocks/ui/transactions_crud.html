@@ -9,26 +9,68 @@
     <div id="status"></div>
 </form>
 
-<script>
-    document.getElementById('transaction-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const payload = {
-        userId: document.getElementById('userId').value,
-        recipientId: document.getElementById('recipientId').value,
-        amount: parseFloat(document.getElementById('amount').value),
-        type: document.getElementById('type').value,
-      };
+<h2>Transaction List</h2>
+<table id="transaction-table" border="1">
+  <thead>
+    <tr>
+      <th>Transaction ID</th>
+      <th>Sender</th>
+      <th>Recipient</th>
+      <th>Amount</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
-      try {
-        const response = await fetch('http://localhost:3000/api/transactions', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const result = await response.json();
-        document.getElementById('status').textContent = response.ok ? 'Success!' : result.message;
-      } catch (err) {
-        document.getElementById('status').textContent = 'Error submitting transaction';
+<script>
+  async function fetchAndRenderTransactions(userId) {
+    const tableBody = document.querySelector('#transaction-table tbody');
+    tableBody.innerHTML = '';
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/users/${userId}/transactions`);
+      const transactions = await response.json();
+
+      for (const txn of transactions) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${txn.transactionId}</td>
+          <td>${txn.userId}</td>
+          <td>${txn.recipientId}</td>
+          <td>${txn.amount}</td>
+          <td>${txn.type}</td>
+        `;
+        tableBody.appendChild(row);
       }
-    });
+    } catch (err) {
+      console.error('Failed to load transactions', err);
+    }
+  }
+
+  document.getElementById('transaction-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const payload = {
+      userId: document.getElementById('userId').value,
+      recipientId: document.getElementById('recipientId').value,
+      amount: parseFloat(document.getElementById('amount').value),
+      type: document.getElementById('type').value,
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/api/transactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json();
+      document.getElementById('status').textContent = response.ok ? 'Success!' : result.message;
+
+      if (response.ok) {
+        fetchAndRenderTransactions(payload.userId);
+      }
+    } catch (err) {
+      document.getElementById('status').textContent = 'Error submitting transaction';
+    }
+  });
 </script>
