@@ -1,0 +1,34 @@
+<form id="transaction-form">
+    <input type="text" id="userId" name="userId" placeholder="Sender User ID" />
+    <input type="text" id="recipientId" name="recipientId" placeholder="Recipient User ID" />
+    <input type="number" id="amount" name="amount" placeholder="Amount" />
+    <select id="type" name="type">
+        <option value="transfer">Transfer</option>
+    </select>
+    <button type="submit">Submit</button>
+    <div id="status"></div>
+</form>
+
+<script>
+    document.getElementById('transaction-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        userId: document.getElementById('userId').value,
+        recipientId: document.getElementById('recipientId').value,
+        amount: parseFloat(document.getElementById('amount').value),
+        type: document.getElementById('type').value,
+      };
+
+      try {
+        const response = await fetch('http://localhost:3000/api/transactions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json();
+        document.getElementById('status').textContent = response.ok ? 'Success!' : result.message;
+      } catch (err) {
+        document.getElementById('status').textContent = 'Error submitting transaction';
+      }
+    });
+</script>

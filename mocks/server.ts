@@ -46,7 +46,7 @@ app.get('/api/users/:userId', (req, res) => {
 app.get('/api/users', (req, res) => {
     try {
         const users = userService.getAllUsers();
-        res.status(200).json(users);
+        return res.status(200).json(users);
     } catch (err: any) {
         res.status(500).json({ error: err.message });
     }

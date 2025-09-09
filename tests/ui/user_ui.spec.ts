@@ -13,8 +13,8 @@ test.describe('User CRUD UI', () => {
   });
 
   test('should create a user and display in All Users table', async ({ page }) => {
-    const name = 'Alice UI';
-    const email = `alice_${Date.now()}@test.com`;
+    const name = `Alice_${Date.now()}`; // unique name
+    const email = `${name.toLowerCase()}@test.com`;
 
     await page.fill('#name', name);
     await page.fill('#email', email);
