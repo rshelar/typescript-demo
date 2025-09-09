@@ -1,4 +1,4 @@
-import { User, AccountType } from '../../types';
+import { User, AccountType } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
 function isValidAccountType(value: string): value is AccountType {
@@ -10,6 +10,7 @@ export class UserService {
   private emails = new Set<string>();
 
   createUser(user: { name: string; email: string; accountType: string }): User {
+    console.log('UserService.createUser called with:', user);
     const { name, email, accountType } = user;
     if (!name || !email || !accountType) {
       throw new Error('Missing required fields');

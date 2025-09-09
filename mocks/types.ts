@@ -6,7 +6,7 @@ export enum AccountType {
 
 export enum TransactionType {
     Basic = 'transfer',
-    Deposit = 'deposit'
+    Deposit = 'deposit',
     Withdrawal = 'withdrawal'
 }
 

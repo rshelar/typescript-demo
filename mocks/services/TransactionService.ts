@@ -1,5 +1,5 @@
 import { UserService } from './UserService';
-import { Transaction } from '../../types';
+import { Transaction } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 
 export class TransactionService {
