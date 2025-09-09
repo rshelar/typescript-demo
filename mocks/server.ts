@@ -3,30 +3,34 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { v4 as uuidv4 } from 'uuid';
+import { UserService } from './services/UserService';
 
-const app = express();
+export const app = express();
 const port = 3000;
 
 // In-memory DB
-const users: any[] = [];
-const transactions: any[] = [];
+export const userService = new UserService();
+export const transactions: any[] = [];
 
 app.use(bodyParser.json());
 
 app.post('/api/users', (req, res) => {
-    const { name, name, accountType } = req.body;
-    if (!name || !name || !accountType) {
-          return res.status(400).json({ error: 'Missing required fields' });
+    const { name, email, accountType } = req.body;
+    try {
+        const user = userService.createUser(name, email, accountType);
+        res.status(200).json(user);
+    } catch (error: any) {
+        res.status(400).json({ error: error.message });
     }
-    const user = { userId: uuidv4(), name, email, accountType };
-    users.push(user);
-    res.status(201).json(user);
 });
 
 app.get('/api/users/:userId', (req, res) => {
-    const user = users.find((u) => u.userId === req.params.userId);
-    if (user) return res.status(200).json(user);
-    return res.status(404).json({ message: 'User not found' });
+    try {
+        const user = userService.getUserById(req.params.userId);
+        return res.status(200).json(user);
+    } catch (err: any) {
+        return res.status(404).json({ error: err.message });
+    }
 });
 
 app.post('/api/transactions', (req, res) => {
@@ -55,7 +59,7 @@ app.post('/api/transactions', (req, res) => {
       };
 
     transactions.push(transaction);
-    res.status(201).json(transaction);
+    res.status(200).json(transaction);
 });
 
 app.get('/api/users/:userId/transactions', (req, res) => {
