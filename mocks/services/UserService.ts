@@ -31,6 +31,7 @@ export class UserService {
 
     this.users.set(userObj.userId, userObj);
     this.emails.add(email);
+    console.log('Created user:', user)
     return userObj;
   }
 
