@@ -19,8 +19,8 @@ export interface User {
 
 export interface Transaction {
     transactionId?: string;       // optional for request
-    userId: string;
+    userId: string;  // Sender
     amount: number;
     type: TransactionType;
-    recipientId: string;
+    recipientId: string;  // Recipient
 }
